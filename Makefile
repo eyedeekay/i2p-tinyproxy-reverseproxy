@@ -1,5 +1,10 @@
 
-build: echo host site docker-run-host docker-run-site
+build: echo host site
+
+run: docker-run-host docker-run-site
+
+setup: build run
+
 
 host: docker-network
 	docker build -f Dockerfile.host \
@@ -14,6 +19,7 @@ docker-run-host: docker-network
 		--link reverseproxy-$(clearhost)-site \
 		-p :4567 \
 		-p 127.0.0.1:7073:7073 \
+		-p 127.0.0.1:7651:7651 \
 		--volume $(i2pd_dat):/var/lib/i2pd:rw \
 		--restart always \
 		eyedeekay/eepsite-host; true
@@ -43,6 +49,7 @@ clean: docker-clean-site docker-clean-host
 
 echo:
 	@echo "$(tinyproxy_conf)" | tr -d ' ' |  tee etc/tinyproxy/tinyproxy.conf
+	@echo "$(tinyproxy_rules)" | tr -d ' ' |  tee etc/tinyproxy/rules.conf
 	@echo "$(i2pd_tunnels_conf)" | tr -d ' ' | sed 's|tinyproxy-site|reverseproxy-$(clearhost)-site|g' | tee etc/i2pd/tunnels.reverseproxy.conf
 
 follow:
@@ -53,12 +60,18 @@ follow-host:
 
 visit:
 	http_proxy=http://127.0.0.1:4444 \
-		surf http://fi6mnc5ssysdg7m6fd3vmuxltgsg2kjzyqqauiunfwz7qfnlqvdq.b32.i2p
+		surf http://fi6mnc5ssysdg7m6fd3vmuxltgsg2kjzyqqauiunfwz7qfnlqvdq.b32.i2p/
+
+curl:
+	/usr/bin/curl -x 127.0.0.1:4444 http://fi6mnc5ssysdg7m6fd3vmuxltgsg2kjzyqqauiunfwz7qfnlqvdq.b32.i2p
 
 test:
 	surf 127.0.0.1:8888
 
 admin:
 	surf 127.0.0.1:7073
+
+ta:
+	lynx 127.0.0.1:7073
 
 include config.mk
