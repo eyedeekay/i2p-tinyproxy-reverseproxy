@@ -62,6 +62,9 @@ visit:
 	http_proxy=http://127.0.0.1:4444 \
 		surf http://fi6mnc5ssysdg7m6fd3vmuxltgsg2kjzyqqauiunfwz7qfnlqvdq.b32.i2p/
 
+firefox:
+	firefox http://fi6mnc5ssysdg7m6fd3vmuxltgsg2kjzyqqauiunfwz7qfnlqvdq.b32.i2p/
+
 curl:
 	/usr/bin/curl -x 127.0.0.1:4444 http://fi6mnc5ssysdg7m6fd3vmuxltgsg2kjzyqqauiunfwz7qfnlqvdq.b32.i2p
 
