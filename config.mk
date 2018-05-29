@@ -6,7 +6,8 @@ docker-network:
 	docker network create reverseproxy-$(clearhost); true
 
 define tinyproxy_rules
-http://*$(clearhost)\n
+http://*$(clearhost)\n\
+https://*$(clearhost)\n
 endef
 export tinyproxy_rules
 
