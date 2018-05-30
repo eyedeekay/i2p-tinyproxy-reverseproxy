@@ -77,4 +77,7 @@ admin:
 ta:
 	lynx 127.0.0.1:7073
 
+scp:
+	scp ./* media@media:Docker/reddit-i2p
+
 include config.mk

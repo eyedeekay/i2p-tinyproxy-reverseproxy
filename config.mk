@@ -30,10 +30,6 @@ Filter\t\"rules.conf\"\n\
 FilterURLs\tOn\n\
 FilterExtended\tOn\n\
 FilterDefaultDeny\tyes\n\
-ConnectPort\t443\n\
-ConnectPort\t563\n\
-ConnectPort\t80\n\
-ConnectPort\t8888\n\
 ReversePath\t\"/\"\t\"http://$(clearhost)/\"\n\
 ReverseOnly\tYes\n\
 ReverseMagic\tYes\n\
@@ -51,3 +47,12 @@ keys\t=\ttinyproxy-splash.dat\n
 endef
 
 export i2pd_tunnels_conf
+
+define squid_conf
+http_port 8888 accel defaultsite=reverseproxy-$(clearhost)-site no-vhost
+cache_peer reddit.com parent 80 0 no-query originserver name=myAccel
+acl our_sites dstdomain reverseproxy-$(clearhost)-site
+http_access allow our_sites
+cache_peer_access myAccel allow our_sites
+cache_peer_access myAccel deny all
+endef
